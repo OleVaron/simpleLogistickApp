@@ -10,12 +10,13 @@ public class Resource {
     public Resource(long speed, long capacity) {
         this.speed = speed;
         this.capacity = capacity;
-        orders = new ArrayList<Order>();
+        this.orders = new ArrayList<Order>();
     }
 
     public Resource() {
         this.speed = 50;
         this.capacity = 2000;
+        this.orders = new ArrayList<Order>();
     }
 
     public long getSpeed() {

@@ -1,6 +1,7 @@
 package whatever.model;
 
 
+import java.util.Calendar;
 import java.util.Random;
 
 public class Order {
@@ -35,7 +36,11 @@ public class Order {
         Random r = new Random();
         this.lat = MIN_LAT_FOR_SAMARA + r.nextFloat() * (MAX_LAT_FOR_SAMARA - MIN_LAT_FOR_SAMARA);
         this.lng = MIN_LNG_FOR_SAMARA + r.nextFloat() * (MAX_LNG_FOR_SAMARA - MIN_LNG_FOR_SAMARA);
-        this.startTimeWindow = DROP_TIME_START * 
+        this.startTimeWindow = DROP_TIME_START + (long) (r.nextFloat() * (DROP_TIME_END - DROP_TIME_START));
+        this.endTimeWindow = startTimeWindow + (r.nextInt(3) + 1) * 1000 * 60 * 60;
+        this.weight = 100;
+        this.loadTime = (r.nextInt(15) + 1) * 1000 * 60;
+        this.unloadTime = (r.nextInt(8) + 1) * 1000 * 60;
     }
 
     public float getLat() {
@@ -64,5 +69,12 @@ public class Order {
 
     public long getUnloadTime() {
         return unloadTime;
+    }
+
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Lat/Lng = ").append(this.lat).append(" / ").append(this.lng).append("\n")
+                .append("Time Window = ").append(this.startTimeWindow).append(" / ").append(this.endTimeWindow);
+        return stringBuilder.toString();
     }
 }

@@ -2,7 +2,9 @@ package whatever;
 
 import whatever.model.Order;
 import whatever.model.Resource;
+import whatever.service.OSRMRouting;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,7 +12,13 @@ public class App
 {
     public static void main( String[] args )
     {
-        ArrayList<Resource> resources = getTestFleet(10);
+        try {
+            Long aLong =  OSRMRouting.getPathDuration();
+            System.out.println(aLong);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+//        ArrayList<Resource> resources = getTestFleet(10);
     }
 
     public static ArrayList<Resource> getTestFleet(int count) {

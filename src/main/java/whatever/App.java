@@ -3,6 +3,7 @@ package whatever;
 import whatever.model.Order;
 import whatever.model.Resource;
 import whatever.service.OSRMRouting;
+import whatever.service.SimpleRouting;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,12 +13,20 @@ public class App
 {
     public static void main( String[] args )
     {
-        try {
-            Long aLong =  OSRMRouting.getPathDuration();
-            System.out.println(aLong);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+//        float startLat = 53.216975f; //strait line
+//        float startLng = 50.186870f;
+//        float endLat   = 53.232319f;
+//        float endLng   = 50.196973f;
+
+        float startLat = 53.249308f;
+        float startLng = 50.275468f;
+        float endLat   = 53.196071f;
+        float endLng   = 50.128869f;
+
+        OSRMRouting osrmRouting = new OSRMRouting();
+        System.out.println("osrmRouting = "+osrmRouting.getDistance(startLat, startLng, endLat, endLng));
+        SimpleRouting simpleRouting = new SimpleRouting();
+        System.out.println("simpleRouting = " +simpleRouting.getDistance(startLat, startLng, endLat, endLng));
 //        ArrayList<Resource> resources = getTestFleet(10);
     }
 

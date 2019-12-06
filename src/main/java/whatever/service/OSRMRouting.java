@@ -13,32 +13,39 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OSRMRouting {
+public class OSRMRouting implements Routing{
     public static String OSRM_URL = "http://router.project-osrm.org/route/v1/driving/";
 
-    public static Long getPathDuration() throws IOException, ParseException {
+    public long getDistance(float startLat,float startLng,float endLat,float endLng) {
+        Float fLoat = 0f;
+        try {
+            String urlString = OSRM_URL + startLat +","+ startLng+";"+ endLat+","+endLng; //+ "?overview=false";
+//            String urlString = OSRM_URL + "53.183786,50.095143;" + "53.258624,50.278268" + "?overview=false";
+            System.out.println(urlString);
+            URL url = new URL(urlString);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.connect();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
 
-        String urlString = OSRM_URL+"53.183786,50.095143;"+"53.258624,50.278268"+"?overview=false";
-        URL url = new URL(urlString);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.connect();
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
+            con.disconnect();
+            JSONParser parser = new JSONParser();
+            JSONObject responseJson = (JSONObject) parser.parse(content.toString());
+            JSONArray msg = (JSONArray) responseJson.get("routes");
+            fLoat = Float.parseFloat(((JSONObject) msg.get(0)).get("distance").toString());
+        } catch (Exception e) {
+            System.out.println("OSRMRouting:"+e);
         }
-        in.close();
-
-        con.disconnect();
-        JSONParser parser = new JSONParser();
-        JSONObject responseJson = (JSONObject)parser.parse(content.toString());
-        JSONArray msg = (JSONArray) responseJson.get("routes");
-        Float fLoat = Float.parseFloat(((JSONObject)msg.get(0)).get("duration").toString());
-
         return fLoat.longValue();
     }
+
+
 
     public static String getParamsString(Map<String, String> params)
             throws UnsupportedEncodingException {

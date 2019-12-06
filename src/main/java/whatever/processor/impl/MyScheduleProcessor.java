@@ -6,6 +6,7 @@ import whatever.processor.ScheduleProcessor;
 public class MyScheduleProcessor implements ScheduleProcessor {
 
     public MyScheduleProcessor() {
+
     }
 
     @Override

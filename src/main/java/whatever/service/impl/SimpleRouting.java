@@ -1,4 +1,6 @@
-package whatever.service;
+package whatever.service.impl;
+
+import whatever.service.Routing;
 
 import static java.lang.Math.*;
 

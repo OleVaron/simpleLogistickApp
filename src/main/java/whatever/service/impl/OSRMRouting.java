@@ -1,9 +1,10 @@
-package whatever.service;
+package whatever.service.impl;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import whatever.service.Routing;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -13,7 +14,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OSRMRouting implements Routing{
+public class OSRMRouting implements Routing {
     public static String OSRM_URL = "http://router.project-osrm.org/route/v1/driving/";
 
     public long getDistance(float startLat,float startLng,float endLat,float endLng) {

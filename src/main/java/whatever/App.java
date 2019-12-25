@@ -2,10 +2,10 @@ package whatever;
 
 import whatever.model.Order;
 import whatever.model.Resource;
-import whatever.service.OSRMRouting;
-import whatever.service.SimpleRouting;
+import whatever.processor.impl.MyScheduleProcessor;
+import whatever.service.impl.OSRMRouting;
+import whatever.service.impl.SimpleRouting;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -23,11 +23,15 @@ public class App
         float endLat   = 53.196071f;
         float endLng   = 50.128869f;
 
-        OSRMRouting osrmRouting = new OSRMRouting();
-        System.out.println("osrmRouting = "+osrmRouting.getDistance(startLat, startLng, endLat, endLng));
-        SimpleRouting simpleRouting = new SimpleRouting();
-        System.out.println("simpleRouting = " +simpleRouting.getDistance(startLat, startLng, endLat, endLng));
-//        ArrayList<Resource> resources = getTestFleet(10);
+//        OSRMRouting osrmRouting = new OSRMRouting();
+//        System.out.println("osrmRouting = "+osrmRouting.getDistance(startLat, startLng, endLat, endLng));
+//        SimpleRouting simpleRouting = new SimpleRouting();
+//        System.out.println("simpleRouting = " +simpleRouting.getDistance(startLat, startLng, endLat, endLng));
+        MyScheduleProcessor myScheduleProcessor = new MyScheduleProcessor();
+        ArrayList<Resource> resources = getTestFleet(10);
+        for (Resource resource: resources ) {
+            myScheduleProcessor.process(resource);
+        }
     }
 
     public static ArrayList<Resource> getTestFleet(int count) {

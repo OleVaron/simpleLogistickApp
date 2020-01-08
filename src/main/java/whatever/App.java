@@ -1,12 +1,13 @@
 package whatever;
 
+import whatever.model.DistributionCenter;
 import whatever.model.Order;
 import whatever.model.Resource;
+import whatever.processor.ScheduleProcessor;
 import whatever.processor.impl.MyScheduleProcessor;
-import whatever.service.impl.OSRMRouting;
-import whatever.service.impl.SimpleRouting;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 
 public class App
@@ -23,15 +24,13 @@ public class App
         float endLat   = 53.196071f;
         float endLng   = 50.128869f;
 
-//        OSRMRouting osrmRouting = new OSRMRouting();
+//        OSRMRoutingService osrmRouting = new OSRMRoutingService();
 //        System.out.println("osrmRouting = "+osrmRouting.getDistance(startLat, startLng, endLat, endLng));
-//        SimpleRouting simpleRouting = new SimpleRouting();
+//        SimpleRout ingService simpleRouting = new SimpleRoutingService();
 //        System.out.println("simpleRouting = " +simpleRouting.getDistance(startLat, startLng, endLat, endLng));
-        MyScheduleProcessor myScheduleProcessor = new MyScheduleProcessor();
-        ArrayList<Resource> resources = getTestFleet(10);
-        for (Resource resource: resources ) {
-            myScheduleProcessor.process(resource);
-        }
+        DistributionCenter dc = new DistributionCenter();
+        ScheduleProcessor myScheduleProcessor = new MyScheduleProcessor(dc);
+        myScheduleProcessor.process();
     }
 
     public static ArrayList<Resource> getTestFleet(int count) {
@@ -51,6 +50,17 @@ public class App
                 resource.getOrders().add(order);
                 System.out.println(order);
             }
+            resource.getOrders().sort(new Comparator<Order>() {
+                @Override
+                public int compare(Order o1, Order o2) {
+                    if (o1.getStartTimeWindow() > o2.getStartTimeWindow()) {
+                        return 1;
+                    } else if (o1.getStartTimeWindow() < o2.getStartTimeWindow()) {
+                        return -1;
+                    }
+                    return 0;
+                }
+            });
         }
         return resources;
     }

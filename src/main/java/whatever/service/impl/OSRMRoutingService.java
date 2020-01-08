@@ -3,18 +3,16 @@ package whatever.service.impl;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import whatever.service.Routing;
+import whatever.service.RoutingService;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Map;
 
-public class OSRMRouting implements Routing {
+public class OSRMRoutingService implements RoutingService {
     public static String OSRM_URL = "http://router.project-osrm.org/route/v1/driving/";
 
     public long getDistance(float startLat,float startLng,float endLat,float endLng) {
@@ -41,7 +39,7 @@ public class OSRMRouting implements Routing {
             JSONArray msg = (JSONArray) responseJson.get("routes");
             fLoat = Float.parseFloat(((JSONObject) msg.get(0)).get("distance").toString());
         } catch (Exception e) {
-            System.out.println("OSRMRouting:"+e);
+            System.out.println("OSRMRoutingService:"+e);
         }
         return fLoat.longValue();
     }
@@ -55,7 +53,7 @@ public class OSRMRouting implements Routing {
 
 //        con.setDoOutput(true);
 //        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-//        out.writeBytes(OSRMRouting.getParamsString(parameters));
+//        out.writeBytes(OSRMRoutingService.getParamsString(parameters));
 //        out.flush();
 //        out.close();
 

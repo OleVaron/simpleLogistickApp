@@ -14,7 +14,7 @@ public class Resource {
     }
 
     public Resource() {
-        this.speed = 50;
+        this.speed = 20000;
         this.capacity = 2000;
         this.orders = new ArrayList<Order>();
     }

@@ -1,12 +1,10 @@
 package whatever.service.impl;
 
-import whatever.service.Routing;
-
-import static java.lang.Math.*;
+import whatever.service.RoutingService;
 
 
 //https://www.geodatasource.com/developers/java
-public class SimpleRouting implements Routing {
+public class SimpleRoutingService implements RoutingService {
 
     public long getDistance(float startLat,float startLng,float endLat,float endLng){
         double theta = startLng - endLng;

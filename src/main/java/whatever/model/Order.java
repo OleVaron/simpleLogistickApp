@@ -1,10 +1,12 @@
 package whatever.model;
 
 
+import whatever.processor.Location;
+
 import java.util.Calendar;
 import java.util.Random;
 
-public class Order {
+public class Order implements Location {
     static final float MIN_LAT_FOR_SAMARA = 53.183786f;
     static final float MAX_LAT_FOR_SAMARA = 53.258324f;
     static final float MIN_LNG_FOR_SAMARA = 50.095143f;

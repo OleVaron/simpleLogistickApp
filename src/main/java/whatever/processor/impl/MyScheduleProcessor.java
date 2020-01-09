@@ -3,6 +3,7 @@ package whatever.processor.impl;
 import whatever.model.DistributionCenter;
 import whatever.model.Order;
 import whatever.model.Resource;
+import whatever.processor.Location;
 import whatever.processor.ScheduleProcessor;
 import whatever.service.RoutingService;
 import whatever.service.impl.SimpleRoutingService;
@@ -28,19 +29,21 @@ public class MyScheduleProcessor implements ScheduleProcessor {
             for (Order order: resource.getOrders()) {
                 i++;
                 order.getStartTimeWindow();
-                long minToTarget;
-                long minToDCAndToTarget;
+                float minToTarget;
+                float minToDCAndToTarget;
                 Long departTime;
-                System.out.println("getStartTimeWindow() "+new Date(order.getStartTimeWindow()));
+
                 if (i == 0) {
-                    minToTarget = ((resource.getSpeed() / routingService.getDistance(dc.getLat(), dc.getLng(), order.getLat(), order.getLng()) * 60));
+//                    minToTarget = ((resource.getSpeed() / routingService.getDistance(dc.getLat(), dc.getLng(), order.getLat(), order.getLng()) * 60));
+                    minToTarget = getMinutesBetweenTargets(dc, order, resource.getSpeed());
                     minToTarget+= order.getLoadTime();
                     minToTarget+= order.getUnloadTime();
-
-                    departTime = order.getStartTimeWindow() - minToTarget;
+//                    departTime = order.getStartTimeWindow() - minToTarget;
                 } else {
                     Order privOrder = resource.getOrders().get(i-1);
-                    minToTarget = ((resource.getSpeed() / routingService.getDistance(privOrder.getLat(), privOrder.getLng(), order.getLat(), order.getLng()) * 60));
+                    minToTarget = getMinutesBetweenTargets(privOrder, order, resource.getSpeed());
+                    minToDCAndToTarget = getMinutesBetweenTargets(privOrder, dc, resource.getSpeed()) + getMinutesBetweenTargets(dc, order, resource.getSpeed());
+                    System.out.println("minToTarget: "+minToTarget+" minToDCAndToTarget:"+minToDCAndToTarget);
                 }
 
 
@@ -51,6 +54,10 @@ public class MyScheduleProcessor implements ScheduleProcessor {
 
             }
         }
+    }
+
+    protected float getMinutesBetweenTargets(Location startPoint, Location endPoint, long metersPerSecond) {
+        return ((float)(routingService.getDistance(startPoint.getLat(), startPoint.getLng(), endPoint.getLat(), endPoint.getLng() ) / metersPerSecond) * 60);
     }
 
 

@@ -1,10 +1,12 @@
 package whatever.model;
 
+import whatever.processor.Location;
+
 import java.util.ArrayList;
 
 import static whatever.App.getTestFleet;
 
-public class DistributionCenter {
+public class DistributionCenter implements Location {
     float lat;
     float lng;
     long startWorkTime;
@@ -50,6 +52,13 @@ public class DistributionCenter {
 
     public void setFleet(ArrayList<Resource> fleet) {
         this.fleet = fleet;
+    }
+
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Lat/Lng = ").append(this.lat).append(" / ").append(this.lng).append("\n")
+                .append("Work Time = ").append(this.startWorkTime).append(" / ").append(this.endWorkTime);
+        return stringBuilder.toString();
     }
 
 }

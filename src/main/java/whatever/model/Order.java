@@ -57,6 +57,10 @@ public class Order implements Location {
         return startTimeWindow;
     }
 
+    public long getStartTimeWindowSec() {
+        return startTimeWindow / 1000;
+    }
+
     public long getEndTimeWindow() {
         return endTimeWindow;
     }

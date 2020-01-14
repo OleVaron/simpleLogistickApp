@@ -4,6 +4,7 @@ package whatever.model;
 import whatever.processor.Location;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 public class Order implements Location {
@@ -57,10 +58,6 @@ public class Order implements Location {
         return startTimeWindow;
     }
 
-    public long getStartTimeWindowSec() {
-        return startTimeWindow / 1000;
-    }
-
     public long getEndTimeWindow() {
         return endTimeWindow;
     }
@@ -80,7 +77,7 @@ public class Order implements Location {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Lat/Lng = ").append(this.lat).append(" / ").append(this.lng).append("\n")
-                .append("Time Window = ").append(this.startTimeWindow).append(" / ").append(this.endTimeWindow);
+                .append("Time Window = ").append(new Date(this.startTimeWindow)).append(" / ").append(new Date(this.endTimeWindow));
         return stringBuilder.toString();
     }
 }

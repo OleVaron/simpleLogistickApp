@@ -50,7 +50,6 @@ public class App
 //                for (int i = 0; i < r.nextInt(count)+1; i++) {
                 Order order = new Order();
                 resource.getOrders().add(order);
-                System.out.println(order);
             }
             resource.getOrders().sort(new Comparator<Order>() {
                 @Override
@@ -63,6 +62,10 @@ public class App
                     return 0;
                 }
             });
+            for (Order order: resource.getOrders()) {
+                System.out.println(order);
+            }
+
         }
         return resources;
     }

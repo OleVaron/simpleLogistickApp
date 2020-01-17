@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import static whatever.App.getTestFleet;
 
 public class DistributionCenter implements Location {
+
     float lat;
     float lng;
     long startWorkTime;
@@ -17,8 +18,9 @@ public class DistributionCenter implements Location {
     public DistributionCenter() {
         this.lat = 53.22f;
         this.lng = 50.20f;
-        this.startWorkTime = 1000*60*8;
-        this.endWorkTime = 1000*60*22;
+
+        this.startWorkTime = Order.DROP_TIME_START;
+        this.endWorkTime = Order.DROP_TIME_END;
         this.fleet = getTestFleet(1);
     }
 

@@ -17,6 +17,8 @@ public class MyScheduleProcessor implements ScheduleProcessor {
 
     RoutingService routingService = new SimpleRoutingService();
     DistributionCenter dc;
+    long loungeTimeStart;
+    long loungeTimeEnd;
 
     public MyScheduleProcessor(DistributionCenter distributionCenter) {
         dc = distributionCenter;
@@ -28,32 +30,43 @@ public class MyScheduleProcessor implements ScheduleProcessor {
         for (Resource resource: dc.getFleet() ) {
 //            long[] minToTargetArray = new long[resource.getOrders().size()];
 //            long[] minToDCAndToTargetArray = new long[resource.getOrders().size()];
-
+            long plannedStartTime = 0;
+            long timeAfterOrderComplete = 0;
             int i = -1;
             int groupOrdersIndex = 0;
-            ArrayList<OrdersGroup> bunchOfOrders = new ArrayList<>();
+            ArrayList<ArrayList<Order>> groupOfOrders = new ArrayList<>();
 
 
             for (Order order: resource.getOrders()) {
                 i++;
-                long timeToTarget;
-                long timeToDC;
-                long timeFromDCToTarget;
-                long plannedStartTime;
+
+                long timeToTarget= 0;
+                long timeToDC= 0;
+                long timeFromDCToTarget= 0;
+
 
                 if (i == 0) {
-                    bunchOfOrders.add(new OrdersGroup(order, dc));
+                    groupOfOrders.add(new ArrayList<>());
+                    groupOfOrders.get(groupOrdersIndex).add(order);
 //                    bunchOfOrders.get(groupOrdersIndex).add(order);
                     timeToTarget = (long)getTimeBetweenTargets(dc, order, resource.getSpeed());
                     timeToTarget+= order.getLoadTime();
-                    timeToTarget+= order.getUnloadTime();
+//                    timeToTarget+= order.getUnloadTime();
                     plannedStartTime = order.getStartTimeWindow() - timeToTarget;
-                    print(plannedStartTime);
+                    timeAfterOrderComplete = order.getStartTimeWindow() + order.getUnloadTime();
+                    System.out.println("Order 1 depart from DC"+new Date(plannedStartTime));
+                    System.out.println("Order 1 start time    "+new Date(order.getStartTimeWindow()));
+                    System.out.println("Order 1 compleate     "+new Date(timeAfterOrderComplete));
                 } else {
                     Order privOrder = resource.getOrders().get(i-1);
                     timeToTarget = (long)getTimeBetweenTargets(privOrder, order, resource.getSpeed());
                     timeToDC = (long)getTimeBetweenTargets(privOrder, dc, resource.getSpeed());
                     timeFromDCToTarget = (long)getTimeBetweenTargets(dc, order, resource.getSpeed());
+                    if (inTime(timeAfterOrderComplete + timeToTarget, order)) {
+//                        if () {
+//
+//                        }
+                    }
                     order.getStartTimeWindow();
 //                    System.out.println("minToTarget: "+minToTarget+" minToDC: "+minToDC+" minFromDCToTarget: "+minFromDCToTarget);
                 }
@@ -67,6 +80,18 @@ public class MyScheduleProcessor implements ScheduleProcessor {
         float result = ((float)routingService.getDistance(startPoint.getLat(), startPoint.getLng(), endPoint.getLat(), endPoint.getLng() ) / metersPerSecond) * 60*60*1000;
         return result;
     }
+
+    protected boolean inTime(long timePoint, Order order) {
+        if ((order.getStartTimeWindow() < timePoint) && (order.getEndTimeWindow() > timePoint)) {
+            return true;
+        }
+        return false;
+    }
+
+//    protected boolean canAddLoadTime(long startTime, ) {
+//
+//    }
+
 
     void print(long sec) {
         System.out.println(new Date(sec));

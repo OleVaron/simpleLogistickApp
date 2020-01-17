@@ -47,7 +47,6 @@ public class App
         for (Resource resource: resources) {
 
             for (int i = 0; i < 10; i++) {
-//                for (int i = 0; i < r.nextInt(count)+1; i++) {
                 Order order = new Order();
                 resource.getOrders().add(order);
             }

@@ -36,7 +36,6 @@ public class MyScheduleProcessor implements ScheduleProcessor {
             int groupOrdersIndex = 0;
             ArrayList<ArrayList<Order>> groupOfOrders = new ArrayList<>();
 
-
             for (Order order: resource.getOrders()) {
                 i++;
 
@@ -44,16 +43,16 @@ public class MyScheduleProcessor implements ScheduleProcessor {
                 long timeToDC= 0;
                 long timeFromDCToTarget= 0;
 
-
                 if (i == 0) {
                     groupOfOrders.add(new ArrayList<>());
                     groupOfOrders.get(groupOrdersIndex).add(order);
-//                    bunchOfOrders.get(groupOrdersIndex).add(order);
                     timeToTarget = (long)getTimeBetweenTargets(dc, order, resource.getSpeed());
-                    timeToTarget+= order.getLoadTime();
 //                    timeToTarget+= order.getUnloadTime();
-                    plannedStartTime = order.getStartTimeWindow() - timeToTarget;
-                    timeAfterOrderComplete = order.getStartTimeWindow() + order.getUnloadTime();
+                    plannedStartTime = order.getStartTimeWindow() - timeToTarget - order.getLoadTime();
+                    if (plannedStartTime < dc.getBeginWindowTime()) {
+                        plannedStartTime = dc.getBeginWindowTime();
+                    }
+                    timeAfterOrderComplete = plannedStartTime +  order.getLoadTime() + timeToTarget + order.getUnloadTime();
                     System.out.println("Order 1 depart from DC"+new Date(plannedStartTime));
                     System.out.println("Order 1 start time    "+new Date(order.getStartTimeWindow()));
                     System.out.println("Order 1 compleate     "+new Date(timeAfterOrderComplete));
@@ -63,9 +62,7 @@ public class MyScheduleProcessor implements ScheduleProcessor {
                     timeToDC = (long)getTimeBetweenTargets(privOrder, dc, resource.getSpeed());
                     timeFromDCToTarget = (long)getTimeBetweenTargets(dc, order, resource.getSpeed());
                     if (inTime(timeAfterOrderComplete + timeToTarget, order)) {
-//                        if () {
 //
-//                        }
                     }
                     order.getStartTimeWindow();
 //                    System.out.println("minToTarget: "+minToTarget+" minToDC: "+minToDC+" minFromDCToTarget: "+minFromDCToTarget);
